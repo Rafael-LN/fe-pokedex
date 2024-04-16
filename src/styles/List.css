@@ -1,0 +1,8 @@
+li {
+    list-style: none;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+}
