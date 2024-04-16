@@ -15,7 +15,7 @@ const List: React.FC<ListProps> = ({ pokemons }) => {
                 {pokemons.map((pokemon, index) => (
                     <li key={index}>
                         <div className={"item"}>
-                            <Picture pictureUrl={pokemon.pictureUrl} />
+                            <Picture url={pokemon.pictureUrl} alt={pokemon.name} />
                             <span>{pokemon.name}</span>
                         </div>
                     </li>
