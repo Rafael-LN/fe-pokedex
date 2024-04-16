@@ -1,10 +1,10 @@
 import React from 'react';
 import Picture from './Picture';
-import { Pokemon } from "../models";
+import { PokemonList } from "../models";
 import "../styles/List.css";
 
 interface ListProps {
-    pokemons: Pokemon[];
+    pokemons: PokemonList[];
 }
 
 const List: React.FC<ListProps> = ({ pokemons }) => {

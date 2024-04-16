@@ -1,12 +1,11 @@
 // containers/PokemonListContainer.tsx
 import React, {useEffect, useState} from 'react';
-import PokemonList from '../components/List';
-import {PokemonContextProvider} from '../context/PokemonContext'; // Import the context and hook
+import List from '../components/List';
 import {getPokemon} from '../services/pokemonService';
-import {Pokemon} from '../models';
+import {PokemonList} from '../models';
 
 const PokemonListContainer: React.FC = () => {
-    const [pokemonList, setPokemonList] = useState<Pokemon[]>([]);
+    const [pokemonList, setPokemonList] = useState<PokemonList[]>([]);
 
     useEffect(() => {
         const fetchPokemonList = async () => {
@@ -24,7 +23,7 @@ const PokemonListContainer: React.FC = () => {
     }, []); // Add cache functions to dependency array
 
     return (
-        <PokemonList pokemons={pokemonList}/>
+        <List pokemons={pokemonList}/>
     );
 };
 
