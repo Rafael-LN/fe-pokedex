@@ -1,14 +1,12 @@
 import React from 'react';
 import './App.css';
-import PokemonListContainer from "./containers/ListContainer";
+import {PokemonListContainer} from "./containers/ListContainer";
 
-const App: React.FC = () => {
+export function App() {
   return (
-      <div>
+      <div className="App">
         <h1>Welcome to the Pokémon App</h1>
         <PokemonListContainer />
       </div>
   );
-};
-
-export default App;
+}
