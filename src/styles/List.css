@@ -1,8 +1,14 @@
-li {
-    list-style: none;
+.list {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-evenly;
 }
 
 .item {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    margin: 1.5rem 2rem;
+    max-width: min-content;
 }
