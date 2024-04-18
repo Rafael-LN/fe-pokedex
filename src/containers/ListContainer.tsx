@@ -10,7 +10,7 @@ export function PokemonListContainer() {
         <>
             <List pokemons={pokemons}/>
             {hasMorePokemon ? (
-                <button className="btn btn-secondary" onClick={fetchNextPage}>
+                <button className="btn btn-secondary mb-5" onClick={fetchNextPage}>
                     Load more Pokemon
                 </button>
             ) : null}
