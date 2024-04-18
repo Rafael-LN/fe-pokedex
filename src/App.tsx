@@ -1,12 +1,15 @@
 import React from 'react';
 import './App.scss';
-import {PokemonListContainer} from "./containers/ListContainer";
+import {createBrowserRouter, RouterProvider} from "react-router-dom";
+import Home from "./pages/Home";
+
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <Home/>
+    }
+])
 
 export function App() {
-  return (
-      <div className="container text-center">
-        <h1>Welcome to the Pokémon App</h1>
-        <PokemonListContainer />
-      </div>
-  );
+  return <RouterProvider router={router}/>
 }
