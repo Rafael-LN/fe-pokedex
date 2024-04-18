@@ -12,3 +12,7 @@
     margin: 1.5rem 2rem;
     max-width: min-content;
 }
+
+.item > img {
+    height: 8rem;
+}
