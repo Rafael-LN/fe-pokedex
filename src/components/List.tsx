@@ -1,28 +1,26 @@
-import React, {Fragment} from 'react';
-import Picture from './Picture';
 import { type PokemonList} from "../models";
 import "../styles/List.css";
+import {POKEBALL_IMAGE_URL} from "../constants";
 
 type ListProps = {
     pokemons: PokemonList[];
 }
 
-const List: React.FC<ListProps> = ({pokemons}) => {
+export default function List({pokemons}: ListProps) {
     return (
-        <Fragment>
+        <>
             <h2>Pokémon List</h2>
             <div className={"list"}>
-                {pokemons.map((pokemon) => (
-                    <div key={`k-${pokemon.name}`} className={"item"}>
-                        <Picture url={pokemon.pictureUrl} alt={pokemon.name}/>
-                        <span>{pokemon.name}</span> {pokemon.caught && <Picture
-                        url={"https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/poke-ball.png"}
+                {pokemons?.map((pokemon) => (
+                    <div key={`${pokemon.name}-${pokemon.pokedexNumber}`} className={"item"}>
+                        <img src={pokemon.image} alt={pokemon.name}/>
+                        <span>{pokemon.name}</span> {pokemon.caught && <img
+                        src={POKEBALL_IMAGE_URL}
                         alt={"poke-ball"}/>}
                     </div>
                 ))}
             </div>
-        </Fragment>
+        </>
     );
 };
 
-export default List;
