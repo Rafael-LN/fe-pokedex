@@ -11,8 +11,8 @@
     align-items: center;
     margin: 1.5rem 2rem;
     max-width: min-content;
-}
 
-.item > img {
-    height: 8rem;
+    > img {
+        height: 8rem;
+    }
 }

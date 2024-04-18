@@ -1,5 +1,5 @@
 import List from '../components/List';
-import '../styles/Pagination.css'
+import '../styles/Pagination.scss'
 import usePokemons from "../hooks/usePokemons";
 
 
@@ -10,7 +10,7 @@ export function PokemonListContainer() {
         <>
             <List pokemons={pokemons}/>
             {hasMorePokemon ? (
-                <button onClick={fetchNextPage}>
+                <button className="btn btn-secondary" onClick={fetchNextPage}>
                     Load more Pokemon
                 </button>
             ) : null}

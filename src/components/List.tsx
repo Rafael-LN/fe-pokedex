@@ -1,5 +1,5 @@
 import { type PokemonList} from "../models";
-import "../styles/List.css";
+import "../styles/List.scss";
 import {POKEBALL_IMAGE_URL} from "../constants";
 
 type ListProps = {
