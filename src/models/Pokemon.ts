@@ -27,7 +27,7 @@ export type Sprites = {
     };
 }
 
-export type DetailPokemon = {
+export type PokemonDetails = {
     id: number;
     name: string;
     types: PokemonType[];
