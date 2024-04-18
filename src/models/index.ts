@@ -1,2 +1,2 @@
-export * from './PokemonList';
-export * from './PokemonDetails';
+export * from './Pokemon';
+export * from './PokemonResponse';
