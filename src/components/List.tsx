@@ -1,5 +1,4 @@
 import { type PokemonList} from "../models";
-import "../styles/List.scss";
 import PokemonCard from "./PokemonCard";
 
 type ListProps = {
@@ -10,7 +9,7 @@ export default function List({pokemons}: ListProps) {
     return (
         <>
             <h2>Pokémon List</h2>
-            <div className={"list"}>
+            <div className="d-flex flex-wrap justify-content-between">
                 {pokemons?.map((pokemon) => (
                     <PokemonCard pokemon={pokemon}/>
                 ))}

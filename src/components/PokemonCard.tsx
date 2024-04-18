@@ -8,7 +8,7 @@ type PokemonCardProps = {
 export default function PokemonCard({pokemon}: PokemonCardProps) {
     const {name, url, caught, image, pokedexNumber} = pokemon;
     return (
-        <div key={`${name}-${pokedexNumber}`} className="card" style={{width:"15rem"}}>
+        <div key={`${name}-${pokedexNumber}`} className="card mb-4" style={{width:"15rem"}}>
             <img className="card-img-top " src={image} alt={name}/>
             <div className="card-body">
                 <span className="text-capitalize">{name}</span> {caught && <img
