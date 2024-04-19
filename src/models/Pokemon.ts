@@ -10,13 +10,14 @@ export type PokemonComponent = {
     url: string;
 }
 
-export type PokemonType = PokemonComponent & {
+export type PokemonType = {
     slot: number;
 };
 
-export type PokemonStat = PokemonComponent & {
+export type PokemonStat = {
     base_stat: number;
     effort: number;
+    stat: PokemonComponent
 };
 
 export type Sprites = {
