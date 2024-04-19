@@ -20,7 +20,7 @@ export default function PokemonDetail() {
                     (
                         <Container fluid className="p-5" style={{backgroundColor: `${pokemon?.color}`}}>
                             <Row>
-                                <Col lg={2}>
+                                <Col lg={2} md={4}>
                                     <Card key={`${pokemon?.name}-${pokemon?.id}`} className="mb-4" style={{width: "15rem"}}>
                                         <Card.Img variant="top"
                                                   src={pokemon?.sprites.other["official-artwork"].front_default}
@@ -28,7 +28,7 @@ export default function PokemonDetail() {
 
                                     </Card>
                                 </Col>
-                                <Col>
+                                <Col lg={10} md={8}>
                                     {pokemon && <PokemonInfo pokemon={pokemon}/>}
                                 </Col>
                             </Row>
