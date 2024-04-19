@@ -1,10 +1,3 @@
-type name = "hp"
-    | "attack"
-    | "defense"
-    | "special-attack"
-    | "special-defense"
-    | "speed"
-
 export type PokemonComponent = {
     name: string;
     url: string;
@@ -12,6 +5,7 @@ export type PokemonComponent = {
 
 export type PokemonType = {
     slot: number;
+    type: PokemonComponent;
 };
 
 export type PokemonStat = {
@@ -37,6 +31,8 @@ export type PokemonDetails = {
     sprites: Sprites;
     stats: PokemonStat[];
     color: string | null;
+    caught?: boolean;
+    caughtDate?: Date;
 }
 
 export type PokemonList = {
