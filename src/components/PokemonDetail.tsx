@@ -1,13 +1,14 @@
 import {useParams} from "react-router-dom";
 import usePokemon from "../hooks/usePokemon";
+import PokemonStats from "./PokemonStats";
+import {Card, Col, Container, ProgressBar, Row} from "react-bootstrap";
+import {PokemonInfo} from "./PokemonInfo";
 
 export default function PokemonDetail() {
 
     const {name} = useParams();
 
     const {pokemon, isLoading} = usePokemon({name});
-
-    console.log(pokemon)
     return (
         <>
             {
@@ -17,16 +18,22 @@ export default function PokemonDetail() {
                     )
                     :
                     (
-                        <div className="container" style={{backgroundColor: `${pokemon?.color}`}}>
-                            <div key={`${pokemon?.name}-${pokemon?.id}`} className="card mb-4" style={{width: "15rem"}}>
-                                <img className="card-img-top "
-                                     src={pokemon?.sprites.other["official-artwork"].front_default}
-                                     alt={name}/>
-                                <div className="card-body">
-                                    <span className="text-capitalize">{pokemon?.name}</span>
-                                </div>
-                            </div>
-                        </div>
+                        <Container fluid className="p-5" style={{backgroundColor: `${pokemon?.color}`}}>
+                            <Row>
+                                <Col lg={2}>
+                                    <Card key={`${pokemon?.name}-${pokemon?.id}`} className="mb-4" style={{width: "15rem"}}>
+                                        <Card.Img variant="top"
+                                                  src={pokemon?.sprites.other["official-artwork"].front_default}
+                                                  alt={name}/>
+
+                                    </Card>
+                                </Col>
+                                <Col>
+                                    {pokemon && <PokemonInfo pokemon={pokemon}/>}
+                                </Col>
+                            </Row>
+                            {pokemon?.stats && <PokemonStats stats={pokemon?.stats}/>}
+                        </Container>
                     )
             }
         </>
