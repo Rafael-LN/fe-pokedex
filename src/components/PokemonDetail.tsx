@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import usePokemon from "../hooks/usePokemon";
 import PokemonStats from "./PokemonStats";
-import {Card, Col, Container, ProgressBar, Row} from "react-bootstrap";
+import {Card, Col, Container, Row} from "react-bootstrap";
 import {PokemonInfo} from "./PokemonInfo";
 
 export default function PokemonDetail() {
