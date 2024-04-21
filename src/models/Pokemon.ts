@@ -35,7 +35,7 @@ export type PokemonDetails = {
     caughtDate?: Date;
 }
 
-export type PokemonList = {
+export type PokemonListData = {
     name: string;
     url: string;
     image: string;

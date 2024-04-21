@@ -1,10 +1,10 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
 import {POKEMON_API_POKEMON_URL, POKEMON_IMAGES_BASE_URL} from "../constants";
 import {pokeApi} from "../services/pokeApi";
-import {IndexedPokemon, PokemonList, PokemonListResponseType} from "../models";
+import {IndexedPokemon, PokemonListData, PokemonListResponseType} from "../models";
 
 type PokemonContextType = {
-    pokemons: PokemonList[],
+    pokemons: PokemonListData[],
     fetchNextPage: () => Promise<void>,
     hasMorePokemon: boolean,
     markPokemonAsCaught: (pokemonName: string) => void
@@ -20,10 +20,10 @@ const PokemonContext = createContext<PokemonContextType>({
 export const usePokemonContext = () => useContext(PokemonContext);
 
 function usePokemons() {
-    const [pokemons, setPokemons] = useState<PokemonList[]>(() => {
+    const [pokemons, setPokemons] = useState<PokemonListData[]>(() => {
         const storedCaughtPokemons = window.localStorage.getItem("caughtPokemons");
         if (storedCaughtPokemons) {
-            const caughtPokemons = JSON.parse(storedCaughtPokemons) as PokemonList[];
+            const caughtPokemons = JSON.parse(storedCaughtPokemons) as PokemonListData[];
             // Mark caught status for Pokémon if their names are in the caughtPokemons array
             console.log("pokemons ", caughtPokemons)
             return caughtPokemons;
@@ -50,7 +50,7 @@ function usePokemons() {
         }
     };
 
-    const indexedPokemonToListPokemon = (indexedPokemon: IndexedPokemon): PokemonList => {
+    const indexedPokemonToListPokemon = (indexedPokemon: IndexedPokemon): PokemonListData => {
         const pokedexNumber = parseInt(
             indexedPokemon.url
                 .replace(`${POKEMON_API_POKEMON_URL}/`, "")

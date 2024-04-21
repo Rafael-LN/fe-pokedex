@@ -1,8 +1,8 @@
-import {PokemonList} from '../models';
+import {PokemonListData} from '../models';
 import {capitalize} from "../utils";
 import {pokeApi} from "./pokeApi";
 
-export const getPokemonList = async (limit: number = 30, offset: number = 0): Promise<PokemonList[]> => {
+export const getPokemonList = async (limit: number = 30, offset: number = 0): Promise<PokemonListData[]> => {
     /*if (pokemonCache[pokemonNameOrId]) {
         return pokemonCache[pokemonNameOrId];
     }*/

@@ -1,9 +1,9 @@
-import {PokemonList} from "../models";
+import {PokemonListData} from "../models";
 import {POKEBALL_IMAGE_URL} from "../constants";
 import {Link} from "react-router-dom";
 
 type PokemonCardProps = {
-    pokemon: PokemonList;
+    pokemon: PokemonListData;
 }
 
 export default function PokemonCard({pokemon}: PokemonCardProps) {
