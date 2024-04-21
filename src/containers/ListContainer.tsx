@@ -2,14 +2,11 @@ import PokemonList from '../components/PokemonList';
 import '../styles/Pagination.scss'
 import {usePokemonContext} from "../context/PokemonsContext";
 
-interface PokemonListContainerProps {
-    pokedex?: boolean
-}
 
-export function PokemonListContainer({pokedex}: PokemonListContainerProps) {
-    const {pokemons, hasMorePokemon, fetchNextPage} = usePokemonContext();
+export function PokemonListContainer() {
+    const {pokemons, hasMorePokemon, fetchNextPage, isPokedex} = usePokemonContext();
 
-    const filteredPokemons = pokedex ? pokemons.filter(pokemon => pokemon.caught) : pokemons;
+    const filteredPokemons = isPokedex ? pokemons.filter(pokemon => pokemon.caught) : pokemons;
 
     return (
         <>

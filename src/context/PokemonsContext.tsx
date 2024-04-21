@@ -7,7 +7,9 @@ type PokemonContextType = {
     pokemons: PokemonListData[],
     fetchNextPage: () => Promise<void>,
     hasMorePokemon: boolean,
-    markPokemonAsCaught: (pokemonName: string) => void
+    markPokemonAsCaught: (pokemonName: string) => void,
+    isPokedex: boolean,
+    setIsPokedex: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const PokemonContext = createContext<PokemonContextType>({
@@ -15,6 +17,8 @@ const PokemonContext = createContext<PokemonContextType>({
     fetchNextPage: async () => {},
     hasMorePokemon: false,
     markPokemonAsCaught: () => {},
+    isPokedex: false,
+    setIsPokedex: () => {}
 });
 
 export const usePokemonContext = () => useContext(PokemonContext);
@@ -28,11 +32,21 @@ function usePokemons() {
         return [];
     });
     const [nextUrl, setNextUrl] = useState<string | null>(POKEMON_API_POKEMON_URL);
+    const [isPokedex, setIsPokedex] = useState<boolean>(false);
+    const [hasMorePokemon, setHasMorePokemon] = useState<boolean>(!!nextUrl);
 
 
     useEffect(() => {
         fetchPokemon();
     }, []);
+
+    useEffect(() => {
+        if (isPokedex) {
+            setHasMorePokemon(pokemons.filter(pokemon => pokemon.caught).length > 20);
+        }else {
+            setHasMorePokemon(!!nextUrl);
+        }
+    }, [isPokedex]);
 
     const fetchPokemon = async () => {
         if (nextUrl) {
@@ -99,10 +113,12 @@ function usePokemons() {
     return {
         pokemons,
         fetchNextPage: fetchPokemon,
-        hasMorePokemon: !!nextUrl,
+        hasMorePokemon,
         markPokemonAsCaught,
+        isPokedex,
+        setIsPokedex,
     };
-};
+}
 
 type PokemonProviderProps = {
     children: React.ReactNode;
