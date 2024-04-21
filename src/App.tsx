@@ -3,6 +3,7 @@ import './App.scss';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import Home from "./pages/Home";
 import PokemonDetail from "./components/PokemonDetail";
+import {Pokedex} from "./pages/Pokedex";
 
 const router = createBrowserRouter([
     {
@@ -12,6 +13,10 @@ const router = createBrowserRouter([
     {
         path: "pokemon/:name",
         element: <PokemonDetail/>
+    },
+    {
+        path: "pokedex",
+        element: <Pokedex/>
     }
 ])
 
