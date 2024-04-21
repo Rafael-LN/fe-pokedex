@@ -5,7 +5,7 @@ type ListProps = {
     pokemons: PokemonList[];
 }
 
-export default function List({pokemons}: ListProps) {
+export default function PokemonList({pokemons}: ListProps) {
     return (
         <>
             <h2>Pokémon List</h2>

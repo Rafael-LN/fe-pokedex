@@ -1,4 +1,4 @@
-import List from '../components/List';
+import PokemonList from '../components/PokemonList';
 import '../styles/Pagination.scss'
 import {usePokemonContext} from "../context/PokemonsContext";
 
@@ -15,7 +15,7 @@ export function PokemonListContainer({pokedex}: PokemonListContainerProps) {
 
     return (
         <>
-            <List pokemons={filteredPokemons}/>
+            <PokemonList pokemons={filteredPokemons}/>
             {hasMorePokemon ? (
                 <button className="btn btn-secondary mb-5" onClick={fetchNextPage}>
                     Load more Pokemon
