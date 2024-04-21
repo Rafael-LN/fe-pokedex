@@ -4,6 +4,7 @@ import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import Home from "./pages/Home";
 import PokemonDetail from "./components/PokemonDetail";
 import {Pokedex} from "./pages/Pokedex";
+import {Gallery} from "./pages/Gallery";
 
 const router = createBrowserRouter([
     {
@@ -11,11 +12,15 @@ const router = createBrowserRouter([
         element: <Home/>
     },
     {
-        path: "pokemon/:name",
+        path: "/pokemon/:name",
         element: <PokemonDetail/>
     },
     {
-        path: "pokedex",
+        path: "/gallery",
+        element: <Gallery/>
+    },
+    {
+        path: "/pokedex",
         element: <Pokedex/>
     }
 ])
