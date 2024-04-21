@@ -42,10 +42,15 @@ function usePokemons() {
                     indexedPokemonToListPokemon(p)
                 );
 
-                setPokemons(prevPokemons => listPokemons.map(pokemon => {
-                    const caughtPokemon = pokemons.find(p => p.name === pokemon.name);
-                    return caughtPokemon ?? pokemon;
-                }));
+                setPokemons(prevPokemons => {
+                    const mergedPokemons = listPokemons
+                        .filter(pokemon => !prevPokemons.some(p => p.name === pokemon.name))
+                        .map(pokemon => {
+                        const caughtPokemon = prevPokemons.find(p => p.name === pokemon.name);
+                        return caughtPokemon ?? pokemon;
+                    });
+                    return [...prevPokemons, ...mergedPokemons].sort((a, b) => a.pokedexNumber - b.pokedexNumber);
+                });
 
                 setNextUrl(result.data.next);
             }

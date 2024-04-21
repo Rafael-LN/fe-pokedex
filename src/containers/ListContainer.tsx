@@ -9,8 +9,6 @@ interface PokemonListContainerProps {
 export function PokemonListContainer({pokedex}: PokemonListContainerProps) {
     const {pokemons, hasMorePokemon, fetchNextPage} = usePokemonContext();
 
-    console.log(pokemons)
-
     const filteredPokemons = pokedex ? pokemons.filter(pokemon => pokemon.caught) : pokemons;
 
     return (
