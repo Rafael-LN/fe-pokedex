@@ -3,8 +3,12 @@ import '../styles/Pagination.scss'
 import usePokemons from "../hooks/usePokemons";
 
 
-export function PokemonListContainer() {
-    const {pokemons, hasMorePokemon, fetchNextPage} = usePokemons();
+interface PokemonListContainerProps {
+    pokedex?: boolean
+}
+
+export function PokemonListContainer({pokedex}: PokemonListContainerProps) {
+    const {pokemons, hasMorePokemon, fetchNextPage} = usePokemons({pokedex : pokedex});
 
     return (
         <>

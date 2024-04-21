@@ -3,7 +3,11 @@ import {POKEMON_API_POKEMON_URL, POKEMON_IMAGES_BASE_URL} from "../constants";
 import {pokeApi} from "../services/pokeApi";
 import {IndexedPokemon, PokemonList, PokemonListResponseType} from "../models";
 
-const usePokemons = () => {
+type UsePokemonsParams = {
+    pokedex?: boolean;
+}
+
+const usePokemons = ({pokedex}: UsePokemonsParams) => {
     const [pokemons, setPokemons] = useState<PokemonList[]>([]);
     const [nextUrl, setNextUrl] = useState<string | null>(POKEMON_API_POKEMON_URL);
 
