@@ -1,8 +1,6 @@
-import {Button, Col, Form, Row} from "react-bootstrap";
-import React, {useEffect, useState} from "react";
+import {Col, Form, Row} from "react-bootstrap";
+import React from "react";
 import {useSearchContext} from "../context/SearchContext";
-import {POKEMON_API_TYPE_URL} from "../constants";
-import {type PokemonComponent} from "../models";
 
 export function PokedexForm() {
     const {
@@ -14,27 +12,9 @@ export function PokedexForm() {
         setHeightFilter,
         setTypeFilter,
         setTimestampFilter,
+        pokemonTypes
     } = useSearchContext();
 
-    const [pokemonTypes, setPokemonTypes] = useState<PokemonComponent[]>([]);
-
-    useEffect(() => {
-        const fetchPokemonTypes = async () => {
-            try {
-                const response = await fetch(POKEMON_API_TYPE_URL);
-                if (response.ok) {
-                    const data = await response.json();
-                    setPokemonTypes(data.results);
-                } else {
-                    console.error('Failed to fetch Pokemon types');
-                }
-            } catch (error) {
-                console.error('Error fetching Pokemon types:', error);
-            }
-        };
-
-        fetchPokemonTypes();
-    }, []);
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNameFilter(event.target.value);
@@ -52,13 +32,8 @@ export function PokedexForm() {
         setTimestampFilter(new Date(event.target.value));
     };
 
-    const handleSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
-        e.preventDefault();
-        // Perform search or filtering logic here
-    };
-
     return (
-        <Form onSubmit={handleSubmit}>
+        <Form>
             <Row>
                 <Form.Group as={Col} controlId="formName">
                     <Form.Label>Name</Form.Label>
@@ -101,10 +76,6 @@ export function PokedexForm() {
                     />
                 </Form.Group>
             </Row>
-
-            <Button variant="primary" type="submit">
-                Apply Filters
-            </Button>
         </Form>
     );
 }

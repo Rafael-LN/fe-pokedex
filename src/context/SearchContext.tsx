@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, {createContext, useContext, useEffect, useState} from 'react';
+import type {PokemonComponent} from "../models";
+import {POKEMON_API_TYPE_URL} from "../constants";
 
 // Define types for individual search filters
 type NameFilter = string;
@@ -16,6 +18,7 @@ type SearchContextType = {
     setHeightFilter: React.Dispatch<React.SetStateAction<HeightFilter>>;
     setTypeFilter: React.Dispatch<React.SetStateAction<TypeFilter>>;
     setTimestampFilter: React.Dispatch<React.SetStateAction<TimestampFilter>>;
+    pokemonTypes: PokemonComponent[];
 };
 
 type SearchProviderProps = {
@@ -33,6 +36,7 @@ const SearchContext = createContext<SearchContextType>({
     setHeightFilter: () => {},
     setTypeFilter: () => {},
     setTimestampFilter: () => {},
+    pokemonTypes: []
 });
 
 // Custom hook to access the search context
@@ -44,7 +48,25 @@ export function SearchProvider({ children }: SearchProviderProps) {
     const [heightFilter, setHeightFilter] = useState<HeightFilter>('');
     const [typeFilter, setTypeFilter] = useState<TypeFilter>('');
     const [timestampFilter, setTimestampFilter] = useState<TimestampFilter>(new Date());
+    const [pokemonTypes, setPokemonTypes] = useState<PokemonComponent[]>([]);
 
+    useEffect(() => {
+        const fetchPokemonTypes = async () => {
+            try {
+                const response = await fetch(POKEMON_API_TYPE_URL);
+                if (response.ok) {
+                    const data = await response.json();
+                    setPokemonTypes(data.results);
+                } else {
+                    console.error('Failed to fetch Pokemon types');
+                }
+            } catch (error) {
+                console.error('Error fetching Pokemon types:', error);
+            }
+        };
+
+        fetchPokemonTypes();
+    }, []);
     return (
         <SearchContext.Provider
             value={{
@@ -56,6 +78,7 @@ export function SearchProvider({ children }: SearchProviderProps) {
                 setHeightFilter,
                 setTypeFilter,
                 setTimestampFilter,
+                pokemonTypes
             }}
         >
             {children}
