@@ -4,10 +4,10 @@ import {
 } from "../constants";
 import {pokeApi} from "../services/pokeApi";
 import {PokemonDetails} from "../models";
-import usePokemons from "./usePokemons";
+import {usePokemonContext} from "../context/PokemonsContext";
 
 export default function usePokemon(name: string | undefined) {
-    const {markPokemonAsCaught} = usePokemons(); // Access markPokemonAsCaught from usePokemons hook
+    const {markPokemonAsCaught, pokemons} = usePokemonContext(); // Access markPokemonAsCaught from usePokemons hook
 
     const [pokemon, setPokemon] = useState<PokemonDetails | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -17,6 +17,13 @@ export default function usePokemon(name: string | undefined) {
             fetchPokemon();
         }
     }, [name]);
+
+    useEffect(() => {
+        // Update caught status of the current pokemon if it exists in the context
+        if (pokemon && pokemons.some(p => p.name === pokemon.name && p.caught)) {
+            setPokemon(prevPokemon => prevPokemon ? { ...prevPokemon, caught: true } : null);
+        }
+    }, [pokemon, pokemons]);
 
     const fetchPokemon = async () => {
         if (name) {
@@ -31,7 +38,6 @@ export default function usePokemon(name: string | undefined) {
     };
 
     const handleMarkAsCaught = () => {
-        debugger
         if (pokemon) {
             markPokemonAsCaught(pokemon.name);
         }

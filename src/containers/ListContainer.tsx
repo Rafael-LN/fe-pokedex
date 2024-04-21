@@ -1,16 +1,15 @@
 import List from '../components/List';
 import '../styles/Pagination.scss'
-import usePokemons from "../hooks/usePokemons";
-
+import {usePokemonContext} from "../context/PokemonsContext";
 
 interface PokemonListContainerProps {
     pokedex?: boolean
 }
 
 export function PokemonListContainer({pokedex}: PokemonListContainerProps) {
-    const {pokemons, hasMorePokemon, fetchNextPage} = usePokemons(pokedex);
+    const {pokemons, hasMorePokemon, fetchNextPage} = usePokemonContext();
 
-    console.log(pokemons[0])
+    console.log(pokemons)
 
     const filteredPokemons = pokedex ? pokemons.filter(pokemon => pokemon.caught) : pokemons;
 

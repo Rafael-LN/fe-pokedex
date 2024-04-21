@@ -11,7 +11,7 @@ export default function List({pokemons}: ListProps) {
             <h2>Pokémon List</h2>
             <div className="d-flex flex-wrap justify-content-between">
                 {pokemons?.map((pokemon) => (
-                    <PokemonCard pokemon={pokemon}/>
+                    <PokemonCard key={pokemon.name} pokemon={pokemon}/>
                 ))}
             </div>
         </>

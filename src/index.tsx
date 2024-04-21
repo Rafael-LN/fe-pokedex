@@ -3,17 +3,17 @@ import ReactDOM from 'react-dom/client';
 import './index.scss';
 import {App} from './App';
 import reportWebVitals from './reportWebVitals';
-import {PaginationProvider} from "./context/PaginationContext";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import PokemonProvider from "./context/PokemonsContext";
 
 const root = ReactDOM.createRoot(
     document.getElementById('root') as HTMLElement
 );
 root.render(
     <React.StrictMode>
-        <PaginationProvider>
+        <PokemonProvider>
             <App/>
-        </PaginationProvider>
+        </PokemonProvider>
     </React.StrictMode>
 );
 
