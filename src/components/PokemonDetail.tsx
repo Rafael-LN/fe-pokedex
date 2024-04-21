@@ -1,14 +1,15 @@
 import {useParams} from "react-router-dom";
 import usePokemon from "../hooks/usePokemon";
 import PokemonStats from "./PokemonStats";
-import {Card, Col, Container, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Row} from "react-bootstrap";
 import {PokemonInfo} from "./PokemonInfo";
 
 export default function PokemonDetail() {
 
     const {name} = useParams();
 
-    const {pokemon, isLoading} = usePokemon({name});
+    const {pokemon, isLoading, handleMarkAsCaught} = usePokemon(name);
+
     return (
         <>
             {
@@ -25,8 +26,10 @@ export default function PokemonDetail() {
                                         <Card.Img variant="top"
                                                   src={pokemon?.sprites.other["official-artwork"].front_default}
                                                   alt={name}/>
-
                                     </Card>
+                                    <Button onClick={handleMarkAsCaught} disabled={pokemon?.caught}>
+                                        Mark as Caught
+                                    </Button>
                                 </Col>
                                 <Col lg={10} md={8}>
                                     {pokemon && <PokemonInfo pokemon={pokemon}/>}

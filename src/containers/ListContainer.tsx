@@ -8,11 +8,15 @@ interface PokemonListContainerProps {
 }
 
 export function PokemonListContainer({pokedex}: PokemonListContainerProps) {
-    const {pokemons, hasMorePokemon, fetchNextPage} = usePokemons({pokedex : pokedex});
+    const {pokemons, hasMorePokemon, fetchNextPage} = usePokemons(pokedex);
+
+    console.log(pokemons[0])
+
+    const filteredPokemons = pokedex ? pokemons.filter(pokemon => pokemon.caught) : pokemons;
 
     return (
         <>
-            <List pokemons={pokemons}/>
+            <List pokemons={filteredPokemons}/>
             {hasMorePokemon ? (
                 <button className="btn btn-secondary mb-5" onClick={fetchNextPage}>
                     Load more Pokemon

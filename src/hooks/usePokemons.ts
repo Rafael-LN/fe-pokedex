@@ -3,11 +3,7 @@ import {POKEMON_API_POKEMON_URL, POKEMON_IMAGES_BASE_URL} from "../constants";
 import {pokeApi} from "../services/pokeApi";
 import {IndexedPokemon, PokemonList, PokemonListResponseType} from "../models";
 
-type UsePokemonsParams = {
-    pokedex?: boolean;
-}
-
-const usePokemons = ({pokedex}: UsePokemonsParams) => {
+export default function usePokemons(pokedex?: boolean) {
     const [pokemons, setPokemons] = useState<PokemonList[]>([]);
     const [nextUrl, setNextUrl] = useState<string | null>(POKEMON_API_POKEMON_URL);
 
@@ -43,12 +39,18 @@ const usePokemons = ({pokedex}: UsePokemonsParams) => {
         };
     };
 
+    const markPokemonAsCaught = (pokemonName: string) => {
+        setPokemons(prevPokemons =>
+            prevPokemons.map(pokemon =>
+                pokemon.name === pokemonName ? { ...pokemon, caught: true } : pokemon
+            )
+        );
+    };
+
     return {
         pokemons,
         fetchNextPage: fetchPokemon,
         hasMorePokemon: !!nextUrl,
-        setPokemons,
+        markPokemonAsCaught,
     };
 };
-
-export default usePokemons;

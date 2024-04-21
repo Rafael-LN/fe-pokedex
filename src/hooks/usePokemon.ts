@@ -4,12 +4,11 @@ import {
 } from "../constants";
 import {pokeApi} from "../services/pokeApi";
 import {PokemonDetails} from "../models";
+import usePokemons from "./usePokemons";
 
-interface UsePokemonProps {
-    name: string | undefined;
-}
+export default function usePokemon(name: string | undefined) {
+    const {markPokemonAsCaught} = usePokemons(); // Access markPokemonAsCaught from usePokemons hook
 
-export default function usePokemon({name}: UsePokemonProps) {
     const [pokemon, setPokemon] = useState<PokemonDetails | null>(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -31,8 +30,16 @@ export default function usePokemon({name}: UsePokemonProps) {
         }
     };
 
+    const handleMarkAsCaught = () => {
+        debugger
+        if (pokemon) {
+            markPokemonAsCaught(pokemon.name);
+        }
+    };
+
     return {
         pokemon,
         isLoading,
+        handleMarkAsCaught
     };
 };
