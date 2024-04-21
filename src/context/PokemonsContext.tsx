@@ -23,10 +23,7 @@ function usePokemons() {
     const [pokemons, setPokemons] = useState<PokemonListData[]>(() => {
         const storedCaughtPokemons = window.localStorage.getItem("caughtPokemons");
         if (storedCaughtPokemons) {
-            const caughtPokemons = JSON.parse(storedCaughtPokemons) as PokemonListData[];
-            // Mark caught status for Pokémon if their names are in the caughtPokemons array
-            console.log("pokemons ", caughtPokemons)
-            return caughtPokemons;
+            return JSON.parse(storedCaughtPokemons) as PokemonListData[];
         }
         return [];
     });
@@ -44,7 +41,12 @@ function usePokemons() {
                 const listPokemons = result.data.results.map((p) =>
                     indexedPokemonToListPokemon(p)
                 );
-                setPokemons([...pokemons, ...listPokemons]);
+
+                setPokemons(prevPokemons => listPokemons.map(pokemon => {
+                    const caughtPokemon = pokemons.find(p => p.name === pokemon.name);
+                    return caughtPokemon ?? pokemon;
+                }));
+
                 setNextUrl(result.data.next);
             }
         }
