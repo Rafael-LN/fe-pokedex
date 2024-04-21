@@ -9,7 +9,7 @@ type PokemonCardProps = {
 export default function PokemonCard({pokemon}: PokemonCardProps) {
     const {name, url, caught, image, pokedexNumber} = pokemon;
     return (
-        <Link to={`pokemon/${pokemon.name}`} className="text-decoration-none">
+        <Link to={`/pokemon/${pokemon.name}`} className="text-decoration-none">
             <div key={`${name}-${pokedexNumber}`} className="card mb-4" style={{width: "15rem"}}>
                 <img className="card-img-top " src={image} alt={name}/>
                 <div className="card-body">
