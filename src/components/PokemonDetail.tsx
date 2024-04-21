@@ -1,17 +1,26 @@
 import {useNavigate, useParams} from "react-router-dom";
 import usePokemon from "../hooks/usePokemon";
 import PokemonStats from "./PokemonStats";
-import {Button, Card, Col, Container, Row} from "react-bootstrap";
+import {Alert, Button, Card, Col, Container, Row} from "react-bootstrap";
 import {PokemonInfo} from "./PokemonInfo";
+import {useState} from "react";
 
 export default function PokemonDetail() {
     const navigate = useNavigate();
     const {name} = useParams();
     const {pokemon, isLoading, handleMarkAsCaught} = usePokemon(name);
 
+    const [showPopup, setShowPopup] = useState(false); // State to manage the visibility of the popup
+
+
     const goBack = () => {
         navigate(-1);
     }
+
+    const handleMarkAsCaughtAndShowPopup = () => {
+        handleMarkAsCaught();
+        setShowPopup(true); // Show the popup after marking as caught
+    };
 
     return (
         <>
@@ -33,7 +42,7 @@ export default function PokemonDetail() {
                                                   src={pokemon?.sprites.other["official-artwork"].front_default}
                                                   alt={name}/>
                                     </Card>
-                                    <Button onClick={handleMarkAsCaught} disabled={pokemon?.caught}>
+                                    <Button onClick={handleMarkAsCaughtAndShowPopup} disabled={pokemon?.caught}>
                                         Mark as Caught
                                     </Button>
                                 </Col>
@@ -45,6 +54,13 @@ export default function PokemonDetail() {
                         </Container>
                     )
             }
+
+            {showPopup && (
+                <Alert variant="success" onClose={() => setShowPopup(false)} dismissible>
+                    <p>Pokémon successfully marked as caught!</p>
+                </Alert>
+
+            )}
         </>
     )
 }
