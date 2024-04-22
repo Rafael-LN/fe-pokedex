@@ -1,11 +1,10 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
-import {POKEMON_API_POKEMON_URL, POKEMON_API_TYPE_URL, POKEMON_IMAGES_BASE_URL} from "../constants";
+import {POKEMON_API_POKEMON_URL, POKEMON_API_TYPE_URL} from "../constants";
 import {pokeApi} from "../services/pokeApi";
 import {
     IndexedPokemon,
     type PokemonComponent,
     PokemonDetails,
-    PokemonListData,
     PokemonListResponseType
 } from "../models";
 
@@ -13,7 +12,7 @@ type PokemonContextType = {
     pokemons: PokemonDetails[],
     fetchNextPage: () => Promise<void>,
     hasMorePokemon: boolean,
-    markPokemonAsCaught: (pokemonName: string) => void,
+    markPokemonAsCaught: (pokemonName: string | undefined) => void,
     isPokedex: boolean,
     setIsPokedex: React.Dispatch<React.SetStateAction<boolean>>
     pokemonTypes: PokemonComponent[];
@@ -88,7 +87,7 @@ function usePokemons() {
         };
     };
 
-    const markPokemonAsCaught = (pokemonName: string) => {
+    const markPokemonAsCaught = (pokemonName: string | undefined) => {
         // Find the Pokémon object with the given name
         const pokemonToCatch = pokemons.find(pokemon => pokemon.name === pokemonName);
 
