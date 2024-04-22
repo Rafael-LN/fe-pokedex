@@ -8,7 +8,7 @@ import {usePokemonContext} from "../context/PokemonsContext";
 export default function PokemonDetail() {
     const navigate = useNavigate();
     const {name} = useParams();
-    const {pokemons, markPokemonAsCaught} = usePokemonContext();
+    const {pokemons, setCaughtState} = usePokemonContext();
 
     const [showPopup, setShowPopup] = useState(false);
 
@@ -20,7 +20,7 @@ export default function PokemonDetail() {
     }
 
     const handleMarkAsCaughtAndShowPopup = () => {
-        markPokemonAsCaught(pokemon?.name);
+        setCaughtState(pokemon?.name, true);
         setShowPopup(true);
     };
 

@@ -12,7 +12,7 @@ type PokemonContextType = {
     pokemons: PokemonDetails[],
     fetchNextPage: () => Promise<void>,
     hasMorePokemon: boolean,
-    markPokemonAsCaught: (pokemonName: string | undefined) => void,
+    setCaughtState: (pokemonName: string | undefined, caught: boolean) => void,
     isPokedex: boolean,
     setIsPokedex: React.Dispatch<React.SetStateAction<boolean>>
     pokemonTypes: PokemonComponent[];
@@ -22,7 +22,7 @@ const PokemonContext = createContext<PokemonContextType>({
     pokemons: [],
     fetchNextPage: async () => {},
     hasMorePokemon: false,
-    markPokemonAsCaught: () => {},
+    setCaughtState: () => {},
     isPokedex: false,
     setIsPokedex: () => {},
     pokemonTypes: []
@@ -87,13 +87,13 @@ function usePokemons() {
         };
     };
 
-    const markPokemonAsCaught = (pokemonName: string | undefined) => {
+    const setCaughtState = (pokemonName: string | undefined, caught: boolean) => {
         // Find the Pokémon object with the given name
         const pokemonToCatch = pokemons.find(pokemon => pokemon.name === pokemonName);
 
         if (pokemonToCatch) {
             // Update the caught status of the Pokémon object to true
-            const updatedPokemon: PokemonDetails = { ...pokemonToCatch, caught: true, caughtDate: new Date() };
+            const updatedPokemon: PokemonDetails = { ...pokemonToCatch, caught, caughtDate: new Date() };
 
             // Update the state with the modified Pokémon object
             setPokemons(prevPokemons =>
@@ -133,7 +133,7 @@ function usePokemons() {
         pokemons,
         fetchNextPage: fetchPokemon,
         hasMorePokemon,
-        markPokemonAsCaught,
+        setCaughtState: setCaughtState,
         isPokedex,
         setIsPokedex,
         pokemonTypes
