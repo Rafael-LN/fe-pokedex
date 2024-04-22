@@ -1,8 +1,8 @@
-import {PokemonListContainer} from "../containers/ListContainer";
 import {usePokemonContext} from "../context/PokemonsContext";
 import {Button} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {useEffect} from "react";
+import PokemonList from "../components/PokemonList";
 
 export function Pokedex() {
     const navigate = useNavigate();
@@ -20,7 +20,7 @@ export function Pokedex() {
             <Button onClick={goBack}>
                 Go Back
             </Button>
-            <PokemonListContainer/>
+            <PokemonList/>
         </>
     );
 }

@@ -3,6 +3,7 @@ import {usePokemonContext} from "../context/PokemonsContext";
 import {useNavigate} from "react-router-dom";
 import {Button} from "react-bootstrap";
 import {useEffect} from "react";
+import PokemonList from "../components/PokemonList";
 
 export function Gallery() {
     const navigate = useNavigate();
@@ -22,8 +23,7 @@ export function Gallery() {
                 Go Back
             </Button>
             <div className="container text-center">
-                <h1>Welcome to the Pokémon App</h1>
-                <PokemonListContainer/>
+                <PokemonList/>
             </div>
         </>
     );

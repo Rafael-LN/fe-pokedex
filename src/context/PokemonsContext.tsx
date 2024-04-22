@@ -1,7 +1,13 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
-import {POKEMON_API_POKEMON_URL, POKEMON_IMAGES_BASE_URL} from "../constants";
+import {POKEMON_API_POKEMON_URL, POKEMON_API_TYPE_URL, POKEMON_IMAGES_BASE_URL} from "../constants";
 import {pokeApi} from "../services/pokeApi";
-import {IndexedPokemon, PokemonDetails, PokemonListData, PokemonListResponseType} from "../models";
+import {
+    IndexedPokemon,
+    type PokemonComponent,
+    PokemonDetails,
+    PokemonListData,
+    PokemonListResponseType
+} from "../models";
 
 type PokemonContextType = {
     pokemons: PokemonDetails[],
@@ -10,6 +16,7 @@ type PokemonContextType = {
     markPokemonAsCaught: (pokemonName: string) => void,
     isPokedex: boolean,
     setIsPokedex: React.Dispatch<React.SetStateAction<boolean>>
+    pokemonTypes: PokemonComponent[];
 }
 
 const PokemonContext = createContext<PokemonContextType>({
@@ -18,7 +25,8 @@ const PokemonContext = createContext<PokemonContextType>({
     hasMorePokemon: false,
     markPokemonAsCaught: () => {},
     isPokedex: false,
-    setIsPokedex: () => {}
+    setIsPokedex: () => {},
+    pokemonTypes: []
 });
 
 export const usePokemonContext = () => useContext(PokemonContext);
@@ -34,6 +42,7 @@ function usePokemons() {
     const [nextUrl, setNextUrl] = useState<string | null>(POKEMON_API_POKEMON_URL);
     const [isPokedex, setIsPokedex] = useState<boolean>(false);
     const [hasMorePokemon, setHasMorePokemon] = useState<boolean>(!!nextUrl);
+    const [pokemonTypes, setPokemonTypes] = useState<PokemonComponent[]>([]);
 
 
     useEffect(() => {
@@ -103,6 +112,24 @@ function usePokemons() {
         }
     };
 
+    useEffect(() => {
+        const fetchPokemonTypes = async () => {
+            try {
+                const response = await fetch(POKEMON_API_TYPE_URL);
+                if (response.ok) {
+                    const data = await response.json();
+                    setPokemonTypes(data.results);
+                } else {
+                    console.error('Failed to fetch Pokemon types');
+                }
+            } catch (error) {
+                console.error('Error fetching Pokemon types:', error);
+            }
+        };
+
+        fetchPokemonTypes();
+    }, []);
+
     return {
         pokemons,
         fetchNextPage: fetchPokemon,
@@ -110,6 +137,7 @@ function usePokemons() {
         markPokemonAsCaught,
         isPokedex,
         setIsPokedex,
+        pokemonTypes
     };
 }
 
