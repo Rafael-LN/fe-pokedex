@@ -1,10 +1,10 @@
 import React, {createContext, useContext, useEffect, useState} from "react";
 import {POKEMON_API_POKEMON_URL, POKEMON_IMAGES_BASE_URL} from "../constants";
 import {pokeApi} from "../services/pokeApi";
-import {IndexedPokemon, PokemonListData, PokemonListResponseType} from "../models";
+import {IndexedPokemon, PokemonDetails, PokemonListData, PokemonListResponseType} from "../models";
 
 type PokemonContextType = {
-    pokemons: PokemonListData[],
+    pokemons: PokemonDetails[],
     fetchNextPage: () => Promise<void>,
     hasMorePokemon: boolean,
     markPokemonAsCaught: (pokemonName: string) => void,
@@ -24,10 +24,10 @@ const PokemonContext = createContext<PokemonContextType>({
 export const usePokemonContext = () => useContext(PokemonContext);
 
 function usePokemons() {
-    const [pokemons, setPokemons] = useState<PokemonListData[]>(() => {
+    const [pokemons, setPokemons] = useState<PokemonDetails[]>(() => {
         const storedCaughtPokemons = window.localStorage.getItem("caughtPokemons");
         if (storedCaughtPokemons) {
-            return JSON.parse(storedCaughtPokemons) as PokemonListData[];
+            return JSON.parse(storedCaughtPokemons) as PokemonDetails[];
         }
         return [];
     });
@@ -52,9 +52,9 @@ function usePokemons() {
         if (nextUrl) {
             const result = await pokeApi.get<PokemonListResponseType>(nextUrl);
             if (result?.data?.results) {
-                const listPokemons = result.data.results.map((p) =>
-                    indexedPokemonToListPokemon(p)
-                );
+                const listPokemons = await Promise.all(result.data.results.map((p) =>
+                    getPokemonDetails(p)
+                ));
 
                 setPokemons(prevPokemons => {
                     const mergedPokemons = listPokemons
@@ -63,7 +63,7 @@ function usePokemons() {
                         const caughtPokemon = prevPokemons.find(p => p.name === pokemon.name);
                         return caughtPokemon ?? pokemon;
                     });
-                    return [...prevPokemons, ...mergedPokemons].sort((a, b) => a.pokedexNumber - b.pokedexNumber);
+                    return [...prevPokemons, ...mergedPokemons].sort((a, b) => a.id - b.id);
                 });
 
                 setNextUrl(result.data.next);
@@ -71,18 +71,11 @@ function usePokemons() {
         }
     };
 
-    const indexedPokemonToListPokemon = (indexedPokemon: IndexedPokemon): PokemonListData => {
-        const pokedexNumber = parseInt(
-            indexedPokemon.url
-                .replace(`${POKEMON_API_POKEMON_URL}/`, "")
-                .replace("/", "")
-        );
+    const getPokemonDetails = async ({url}: IndexedPokemon): Promise<PokemonDetails> => {
+        const pokemonDetails = await pokeApi.get<PokemonDetails>(url);
 
         return {
-            name: indexedPokemon.name,
-            url: indexedPokemon.url,
-            image: `${POKEMON_IMAGES_BASE_URL}/${pokedexNumber}.png`,
-            pokedexNumber,
+            ...pokemonDetails.data,
         };
     };
 

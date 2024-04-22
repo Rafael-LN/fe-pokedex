@@ -1,8 +1,8 @@
-import { type PokemonListData} from "../models";
+import {PokemonDetails, type PokemonListData} from "../models";
 import PokemonCard from "./PokemonCard";
 
 type ListProps = {
-    pokemons: PokemonListData[];
+    pokemons: PokemonDetails[];
 }
 
 export default function PokemonList({pokemons}: ListProps) {
