@@ -10,7 +10,7 @@ export default function PokemonList() {
     const [nameFilter, setNameFilter] = useState<string>('');
     const [heightFilter, setHeightFilter] = useState<string>('');
     const [typeFilter, setTypeFilter] = useState<string>('');
-    const [timestampFilter, setTimestampFilter] = useState<Date>(new Date());
+    const [timestampFilter, setTimestampFilter] = useState<Date>();
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNameFilter(event.target.value);
@@ -39,7 +39,8 @@ export default function PokemonList() {
             if (heightFilter && (pokemon.height < +heightFilter || pokemon.height > +heightFilter)) {
                 return false;
             }
-            if (timestampFilter && pokemon.caughtDate && pokemon.caughtDate < timestampFilter) {
+
+            if (timestampFilter && pokemon.caughtDate && pokemon.caughtDate.toString() < timestampFilter.toISOString()) {
                 return false;
             }
             return true;

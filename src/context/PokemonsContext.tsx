@@ -93,7 +93,7 @@ function usePokemons() {
 
         if (pokemonToCatch) {
             // Update the caught status of the Pokémon object to true
-            const updatedPokemon = { ...pokemonToCatch, caught: true };
+            const updatedPokemon: PokemonDetails = { ...pokemonToCatch, caught: true, caughtDate: new Date() };
 
             // Update the state with the modified Pokémon object
             setPokemons(prevPokemons =>
