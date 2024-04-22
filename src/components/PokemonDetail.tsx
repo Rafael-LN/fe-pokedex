@@ -24,8 +24,6 @@ export default function PokemonDetail() {
         setShowPopup(true);
     };
 
-    console.log(pokemon)
-
     return (
         <>
             <Container fluid className="p-5" style={{backgroundColor: `${pokemon?.color}`}}>

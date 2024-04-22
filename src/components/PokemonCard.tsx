@@ -1,7 +1,7 @@
 import {PokemonDetails} from "../models";
 import {POKEBALL_IMAGE_URL} from "../constants";
 import {Link} from "react-router-dom";
-import {Card, CardImg, CardText, Form, FormCheck} from "react-bootstrap";
+import {Card, CardBody, CardImg, CardText, Form, FormCheck} from "react-bootstrap";
 import {useState} from "react";
 
 type PokemonCardProps = {
@@ -36,11 +36,11 @@ export default function PokemonCard({pokemon, isPokedex, onToggleCatch}: Pokemon
             }
             <Link to={`/pokemon/${pokemon.name}`} className="text-decoration-none justify-content-center">
                 <CardImg variant="top" src={sprites.other["official-artwork"].front_default} alt={name}/>
-                <Card.Body className="align-items-center">
+                <CardBody className="align-items-center">
                     <CardText className="text-capitalize text-black justify-content-center">
                         {name} {caught && <img src={POKEBALL_IMAGE_URL} alt={"poke-ball"}/>}
                     </CardText>
-                </Card.Body>
+                </CardBody>
             </Link>
         </Card>
     )
