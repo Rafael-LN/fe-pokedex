@@ -1,29 +1,45 @@
 import {PokemonDetails, PokemonType} from "../models";
-import {Card, Col, Row} from "react-bootstrap";
+import {Card, CardBody, CardText, CardTitle, Col, Row} from "react-bootstrap";
 import {capitalize, convert} from "../utils";
 
 interface PokemonInfoProps {
     pokemon: PokemonDetails
+    isPokedex?: boolean
 }
 
-export function PokemonInfo({pokemon}: PokemonInfoProps) {
+export function PokemonInfo({pokemon, isPokedex}: PokemonInfoProps) {
     return (
         <Card>
-            <Card.Body>
-                <Card.Title className="text-capitalize">{pokemon.name}</Card.Title>
+            <CardBody>
+                <CardTitle className="text-capitalize">
+                    {pokemon.name}
+                </CardTitle>
                 <Row>
                     <Col>
-                        <Card.Text> Height: {convert(pokemon.height, 0.1)} m</Card.Text>
-                        <Card.Text> Weight: {convert(pokemon.weight, 0.1)} Kg </Card.Text>
+                        <CardText>
+                            Height: {convert(pokemon.height, 0.1)} m
+                        </CardText>
+                        <Card.Text>
+                            Weight: {convert(pokemon.weight, 0.1)} Kg
+                        </Card.Text>
                     </Col>
                     <Col>
                         {pokemon.types.map(({type}: PokemonType) =>
-                            <Card.Text key={type.name}>Type: {capitalize(type.name)}</Card.Text>
+                            <CardText key={type.name}>
+                                Type: {capitalize(type.name)}
+                            </CardText>
                         )}
                     </Col>
                 </Row>
-
-            </Card.Body>
+                <Row>
+                    {
+                        isPokedex && pokemon?.caughtDate &&
+                        <CardText>
+                            Captured: {new Date(pokemon.caughtDate).toLocaleDateString()}
+                        </CardText>
+                    }
+                </Row>
+            </CardBody>
         </Card>
     );
 }
