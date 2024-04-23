@@ -1,18 +1,32 @@
-import React, { useState } from 'react';
-import { Col, Form, Row, Button } from 'react-bootstrap';
+import React, {useState} from 'react';
+import {Col, Form, Row, Button} from 'react-bootstrap';
 import PokemonCard from './PokemonCard';
-import { usePokemonContext } from '../context/PokemonsContext';
+import {usePokemonContext} from '../context/PokemonsContext';
 import {PokemonDetails} from "../models";
 import {ExportCSVButton} from "./ExportCSVButton";
+import {BackButton} from "./BackButton";
 
-export default function PokemonList() {
-    const { pokemons, hasMorePokemon, fetchNextPage, isPokedex, pokemonTypes, updatePokemonDetails } = usePokemonContext();
+type PokemonListProps = {
+    title?: string
+}
+
+export default function PokemonList({title}: PokemonListProps) {
+    const {
+        pokemons,
+        hasMorePokemon,
+        fetchNextPage,
+        isPokedex,
+        pokemonTypes,
+        updatePokemonDetails
+    } = usePokemonContext();
 
     const [nameFilter, setNameFilter] = useState<string>('');
     const [heightFilter, setHeightFilter] = useState<string>('');
     const [typeFilter, setTypeFilter] = useState<string>('');
     const [timestampFilter, setTimestampFilter] = useState<Date>();
     const [selectedPokemons, setSelectedPokemons] = useState<PokemonDetails[]>([]);
+    const formColMdValue = '6';
+
 
     const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setNameFilter(event.target.value);
@@ -55,23 +69,42 @@ export default function PokemonList() {
                 if (heightFilter && (pokemon.height < +heightFilter || pokemon.height > +heightFilter)) {
                     return false;
                 }
-                if (timestampFilter && pokemon.caughtDate && pokemon.caughtDate.toString() < timestampFilter.toISOString()) {
-                    return false;
-                }
-                return true;
+                return !(timestampFilter && pokemon.caughtDate && pokemon.caughtDate.toString() < timestampFilter.toISOString());
+
             }
             return false;
         })
         : pokemons;
 
+    console.log(filteredPokemons)
+
     return (
         <>
-            <h2>Pokémon List</h2>
+            {title &&
+                <div className={`d-flex align-items-start mt-3`}>
+                    <BackButton/>
+                </div>
+            }
+
+            <h1 className={`display-2 mb-5 mt-4`}>{title}</h1>
+
+            <Row>
+                <Col>
+                    {selectedPokemons.length > 0 && (
+                        <Button variant="danger" onClick={handleDeleteSelected} className={`ms-3`}>
+                            Delete Selected Pokémon
+                        </Button>
+                    )}
+
+                    {isPokedex && <ExportCSVButton pokemons={filteredPokemons} margin={`ms-3`}/>}
+                </Col>
+            </Row>
 
             {isPokedex && (
+
                 <Form>
                     <Row>
-                        <Form.Group as={Col} controlId="formName">
+                        <Form.Group as={Col} controlId="formName" className={`text-start my-2`} md={formColMdValue}>
                             <Form.Label>Name</Form.Label>
                             <Form.Control
                                 type="text"
@@ -81,7 +114,7 @@ export default function PokemonList() {
                                 onChange={handleNameChange}
                             />
                         </Form.Group>
-                        <Form.Group as={Col} controlId="formHeight">
+                        <Form.Group as={Col} controlId="formHeight" className={`text-start my-2`} md={formColMdValue}>
                             <Form.Label>Height</Form.Label>
                             <Form.Control
                                 type="text"
@@ -91,7 +124,7 @@ export default function PokemonList() {
                                 onChange={handleHeightChange}
                             />
                         </Form.Group>
-                        <Form.Group as={Col} controlId="formType">
+                        <Form.Group as={Col} controlId="formType" className={`text-start my-2`} md={formColMdValue}>
                             <Form.Label>Type</Form.Label>
                             <Form.Select className="text-capitalize" value={typeFilter} onChange={handleTypeChange}>
                                 <option value="">Select type</option>
@@ -102,7 +135,8 @@ export default function PokemonList() {
                                 ))}
                             </Form.Select>
                         </Form.Group>
-                        <Form.Group as={Col} controlId="formTimestamp">
+                        <Form.Group as={Col} controlId="formTimestamp" className={`text-start my-2`}
+                                    md={formColMdValue}>
                             <Form.Label>Timestamp</Form.Label>
                             <Form.Control
                                 type="date"
@@ -115,26 +149,21 @@ export default function PokemonList() {
                 </Form>
             )}
 
-            <div className="d-flex flex-wrap justify-content-between">
+            <Row className={`justify-content-center mt-4`}>
                 {filteredPokemons?.map((pokemon) => (
-                    <PokemonCard
-                        key={pokemon.name}
-                        pokemon={pokemon}
-                        isPokedex={isPokedex}
-                        onToggleCatch={handleToggleCatch}
-                    />
+                    <Col lg={`3`} md={`4`} sm={`5`} xs={`6`}>
+                        <PokemonCard
+                            key={pokemon.name}
+                            pokemon={pokemon}
+                            isPokedex={isPokedex}
+                            onToggleCatch={handleToggleCatch}
+                        />
+                    </Col>
                 ))}
-            </div>
+            </Row>
 
-            {selectedPokemons.length > 0 && (
-                <Button variant="danger" onClick={handleDeleteSelected}>
-                    Delete Selected Pokémon
-                </Button>
-            )}
-
-            {hasMorePokemon && <Button className="btn btn-primary" onClick={fetchNextPage}>Load more</Button>}
-
-            {isPokedex && <ExportCSVButton pokemons={filteredPokemons} /> }
+            {!isPokedex && hasMorePokemon &&
+                <Button className={`mb-4`} variant={`secondary`} onClick={fetchNextPage}>Load more</Button>}
         </>
     );
 }
