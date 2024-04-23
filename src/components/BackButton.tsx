@@ -13,7 +13,7 @@ export function BackButton({margin}: BackButtonProps) {
     };
 
     return (
-        <Button onClick={goBack} variant={`outline-secondary`} className={`${margin}`}>
+        <Button onClick={goBack} variant={`outline-secondary`} className={`${margin ?? ''}`}>
             &#8592; Back
         </Button>
     );
