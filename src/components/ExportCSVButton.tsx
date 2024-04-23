@@ -2,10 +2,11 @@ import {Button} from "react-bootstrap";
 import {PokemonDetails} from "../models";
 
 type ExportCSVButtonProps = {
-    pokemons: PokemonDetails[];
+    pokemons: PokemonDetails[],
+    margin?: string
 }
 
-export function ExportCSVButton({pokemons}: ExportCSVButtonProps) {
+export function ExportCSVButton({pokemons, margin}: ExportCSVButtonProps) {
 
     function convertToCSV(pokemons: PokemonDetails[]): string {
         const header = "id,name,type,height,base_stat,caughtDate,note\n";
@@ -21,7 +22,7 @@ export function ExportCSVButton({pokemons}: ExportCSVButtonProps) {
 
     function exportToCSV(pokemons: PokemonDetails[]) {
         const csv = convertToCSV(pokemons);
-        const csvBlob = new Blob([csv], { type: "text/csv" });
+        const csvBlob = new Blob([csv], {type: "text/csv"});
         const url = window.URL.createObjectURL(csvBlob);
         const link = document.createElement("a");
         link.href = url;
@@ -36,7 +37,7 @@ export function ExportCSVButton({pokemons}: ExportCSVButtonProps) {
     };
 
     return (
-        <Button variant="primary" onClick={handleExport}>
+        <Button variant={`success`} onClick={handleExport} className={`${margin}`}>
             Export to CSV
         </Button>
     );
