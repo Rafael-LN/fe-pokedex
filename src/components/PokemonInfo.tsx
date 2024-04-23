@@ -33,7 +33,7 @@ export function PokemonInfo({pokemon, isPokedex}: PokemonInfoProps) {
                 </Row>
                 <Row>
                     {
-                        isPokedex && pokemon?.caughtDate &&
+                       pokemon?.caughtDate &&
                         <CardText>
                             Captured: {new Date(pokemon.caughtDate).toLocaleDateString()}
                         </CardText>

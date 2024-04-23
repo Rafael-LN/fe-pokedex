@@ -27,7 +27,6 @@ export default function PokemonDetail() {
     const [note, setNote] = useState(pokemon?.note);
 
 
-
     const goBack = () => {
         navigate(-1);
     }
@@ -45,12 +44,31 @@ export default function PokemonDetail() {
         updatePokemonDetails(pokemon?.name, pokemon?.caught || false, note);
     };
 
+    const handleShare = async () => {
+        try {
+            await navigator.clipboard.writeText(window.location.href);
+            alert('URL copied to clipboard');
+        } catch (error) {
+            console.error('Failed to copy URL to clipboard:', error);
+            alert('Failed to copy URL to clipboard');
+        }
+    };
+
     return (
         <>
             <Container fluid className="p-5" style={{backgroundColor: `${pokemon?.color}`}}>
-                <Button onClick={goBack}>
-                    Go Back
-                </Button>
+                <Row>
+                    <Col>
+                        <Button onClick={goBack}>
+                            Go Back
+                        </Button>
+                    </Col>
+                    <Col>
+                        <Button onClick={handleShare}>
+                            Share Pokémon
+                        </Button>
+                    </Col>
+                </Row>
                 <Row>
                     <Col lg={2} md={4}>
                         <Card key={`${pokemon?.name}-${pokemon?.id}`} className="mb-4" style={{width: "15rem"}}>
@@ -72,7 +90,7 @@ export default function PokemonDetail() {
                     </Col>
                     <Col lg={6}>
                         {
-                            isPokedex &&
+                            pokemon?.caught &&
                             <FormGroup controlId="noteTextArea">
                                 <FormLabel>Add a Note:</FormLabel>
                                 <FormControl as="textarea" value={note} onChange={handleNoteChange}/>
