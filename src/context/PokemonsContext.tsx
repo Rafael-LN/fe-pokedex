@@ -7,6 +7,7 @@ import {
     PokemonDetails,
     PokemonListResponseType
 } from "../models";
+import {getPokemonsFromLocalStorage, savePokemonsInLocalStorage} from "../utils";
 
 type PokemonContextType = {
     pokemons: PokemonDetails[],
@@ -34,13 +35,9 @@ const PokemonContext = createContext<PokemonContextType>({
 export const usePokemonContext = () => useContext(PokemonContext);
 
 function usePokemons() {
-    const [pokemons, setPokemons] = useState<PokemonDetails[]>(() => {
-        const storedCaughtPokemons = window.localStorage.getItem("caughtPokemons");
-        if (storedCaughtPokemons) {
-            return JSON.parse(storedCaughtPokemons) as PokemonDetails[];
-        }
-        return [];
-    });
+    const [pokemons, setPokemons] = useState<PokemonDetails[]>(
+        () => getPokemonsFromLocalStorage("caughtPokemons")
+     );
     const [nextUrl, setNextUrl] = useState<string | null>(POKEMON_API_POKEMON_URL);
     const [isPokedex, setIsPokedex] = useState<boolean>(false);
     const [hasMorePokemon, setHasMorePokemon] = useState<boolean>(!!nextUrl);
@@ -115,15 +112,24 @@ function usePokemons() {
             const caughtPokemons: PokemonDetails[] = storedCaughtPokemons ? JSON.parse(storedCaughtPokemons) : [];
 
             if (!updatedPokemon.caught) {
-                localStorage.setItem("caughtPokemons", JSON.stringify([...caughtPokemons.filter((caughtPokemon) => caughtPokemon.name !== updatedPokemon.name)]));
-            } else if (updatedPokemon.note) {
-                localStorage.setItem("caughtPokemons", JSON.stringify(
+                savePokemonsInLocalStorage(
+                    "caughtPokemons",
                     [...caughtPokemons
-                        .map((caughtPokemon) => caughtPokemon.name === updatedPokemon.name ? updatedPokemon : caughtPokemon)
-                    ]));
+                        .filter(
+                            (caughtPokemon) =>
+                                caughtPokemon.name !== updatedPokemon.name
+                        )
+                    ]);
+            } else if (updatedPokemon.note) {
+                savePokemonsInLocalStorage("caughtPokemons",
+                    [...caughtPokemons
+                        .map(
+                            (caughtPokemon) =>
+                                caughtPokemon.name === updatedPokemon.name ? updatedPokemon : caughtPokemon
+                        )
+                    ]);
             } else {
-                // Save the updated Pokémon object in localStorage
-                localStorage.setItem("caughtPokemons", JSON.stringify([...caughtPokemons, updatedPokemon]));
+                savePokemonsInLocalStorage("caughtPokemons", [...caughtPokemons, updatedPokemon]);
             }
         }
     };
