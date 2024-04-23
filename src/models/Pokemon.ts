@@ -35,11 +35,3 @@ export type PokemonDetails = {
     caughtDate?: Date;
     note?: string;
 }
-
-export type PokemonListData = {
-    name: string;
-    url: string;
-    image: string;
-    pokedexNumber: number;
-    caught?: boolean;
-}

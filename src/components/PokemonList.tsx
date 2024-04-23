@@ -3,6 +3,7 @@ import { Col, Form, Row, Button } from 'react-bootstrap';
 import PokemonCard from './PokemonCard';
 import { usePokemonContext } from '../context/PokemonsContext';
 import {PokemonDetails} from "../models";
+import {ExportCSVButton} from "./ExportCSVButton";
 
 export default function PokemonList() {
     const { pokemons, hasMorePokemon, fetchNextPage, isPokedex, pokemonTypes, updatePokemonDetails } = usePokemonContext();
@@ -132,6 +133,8 @@ export default function PokemonList() {
             )}
 
             {hasMorePokemon && <Button className="btn btn-primary" onClick={fetchNextPage}>Load more</Button>}
+
+            {isPokedex && <ExportCSVButton pokemons={filteredPokemons} /> }
         </>
     );
 }
