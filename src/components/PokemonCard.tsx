@@ -45,3 +45,4 @@ export default function PokemonCard({pokemon, isPokedex, onToggleCatch}: Pokemon
         </Card>
     )
 }
+

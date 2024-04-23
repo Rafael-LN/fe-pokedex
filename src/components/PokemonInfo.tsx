@@ -9,24 +9,22 @@ interface PokemonInfoProps {
 
 export function PokemonInfo({pokemon, isPokedex}: PokemonInfoProps) {
     return (
-        <Card>
+        <Card className={`text-center`}>
+            <CardTitle className="text-capitalize display-5">About</CardTitle>
             <CardBody>
-                <CardTitle className="text-capitalize">
-                    {pokemon.name}
-                </CardTitle>
                 <Row>
                     <Col>
                         <CardText>
-                            Height: {convert(pokemon.height, 0.1)} m
+                            <strong>Height:</strong> {convert(pokemon.height, 0.1)} m
                         </CardText>
                         <Card.Text>
-                            Weight: {convert(pokemon.weight, 0.1)} Kg
+                            <strong>Weight:</strong> {convert(pokemon.weight, 0.1)} Kg
                         </Card.Text>
                     </Col>
                     <Col>
                         {pokemon.types.map(({type}: PokemonType) =>
                             <CardText key={type.name}>
-                                Type: {capitalize(type.name)}
+                                <strong>Type:</strong> {capitalize(type.name)}
                             </CardText>
                         )}
                     </Col>
@@ -34,8 +32,8 @@ export function PokemonInfo({pokemon, isPokedex}: PokemonInfoProps) {
                 <Row>
                     {
                        pokemon?.caughtDate &&
-                        <CardText>
-                            Captured: {new Date(pokemon.caughtDate).toLocaleDateString()}
+                        <CardText className={`mt-4`}>
+                            <strong>Captured:</strong> {new Date(pokemon.caughtDate).toLocaleDateString()}
                         </CardText>
                     }
                 </Row>
