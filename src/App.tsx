@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.scss';
 import {createBrowserRouter, RouterProvider} from "react-router-dom";
 import Home from "./pages/Home";
 import PokemonDetail from "./components/PokemonDetail";
