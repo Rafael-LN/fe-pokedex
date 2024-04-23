@@ -22,11 +22,11 @@ export default function PokemonCard({pokemon, isPokedex, onToggleCatch}: Pokemon
     };
 
     return (
-        <Card key={`${name}-${id}`} className="text-center mb-4" style={{width: "15rem"}}>
+        <Card key={`${name}-${id}`} className={`text-center bg-dark-subtle mb-4 px-4 py-2 w-auto`}>
             {isPokedex &&
                 <Form>
                     <FormCheck
-                        className="align-self-end p-2"
+                        className={`align-self-end p-2`}
                         id={`${id}`}
                         onChange={handleCheckboxChange}
                         checked={isSelected}
@@ -34,10 +34,10 @@ export default function PokemonCard({pokemon, isPokedex, onToggleCatch}: Pokemon
                     />
                 </Form>
             }
-            <Link to={`/pokemon/${pokemon.name}`} className="text-decoration-none justify-content-center">
-                <CardImg variant="top" src={sprites.other["official-artwork"].front_default} alt={name}/>
-                <CardBody className="align-items-center">
-                    <CardText className="text-capitalize text-black justify-content-center">
+            <Link to={`/pokemon/${pokemon.name}`} className={`text-decoration-none`}>
+                <CardImg variant="top" src={sprites.other["official-artwork"].front_default} alt={name} />
+                <CardBody>
+                    <CardText className={`text-capitalize text-truncate text-black`}>
                         {name} {caught && <img src={POKEBALL_IMAGE_URL} alt={"poke-ball"}/>}
                     </CardText>
                 </CardBody>
