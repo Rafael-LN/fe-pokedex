@@ -1,10 +1,9 @@
-import {Button, Container} from "react-bootstrap";
-import {useNavigate} from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Card, CardBody, CardText, Container} from "react-bootstrap";
 import {usePokemonContext} from "../context/PokemonsContext";
-import {useEffect, useState} from "react";
+import {BackButton} from "../components/BackButton";
 
 export function MyProgress() {
-    const navigate = useNavigate();
     const {pokemons, allPokemonsCount} = usePokemonContext();
 
     const [percentageCaught, setPercentageCaught] = useState<string>('');
@@ -22,21 +21,21 @@ export function MyProgress() {
 
     }, [pokemons, allPokemonsCount]);
 
-
-    const goBack = () => {
-        navigate(-1);
-    }
-
     return (
-        <Container>
-            <Button onClick={goBack}>
-                Go Back
-            </Button>
+        <Container className={`text-center`}>
+            <div className={`d-flex align-items-start mt-3`}>
+                <BackButton/>
+            </div>
 
-            <h2>Pokédex Progress</h2>
-            <p>Total Pokémon Caught: {totalCaughtPokemon}</p>
-            <p>Percentage Caught: {percentageCaught}%</p>
-            <p>Pokémon Remaining to Catch: {remainingPokemon}</p>
+            <h2 className={`display-1`}>Pokédex Progress</h2>
+
+            <Card className={`text-start w-25`} >
+                <CardBody>
+                    <CardText>Total Pokémon Caught: {totalCaughtPokemon}</CardText>
+                    <CardText>Percentage Caught: {percentageCaught}%</CardText>
+                    <CardText>Pokémon Remaining to Catch: {remainingPokemon}</CardText>
+                </CardBody>
+            </Card>
 
         </Container>
     );
