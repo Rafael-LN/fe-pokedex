@@ -1,6 +1,6 @@
 import {usePokemonContext} from "../context/PokemonsContext";
 import {Button} from "react-bootstrap";
-import {useNavigate} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useEffect} from "react";
 import PokemonList from "../components/PokemonList";
 
@@ -20,6 +20,9 @@ export function Pokedex() {
             <Button onClick={goBack}>
                 Go Back
             </Button>
+            <Link to={`/pokedex/my-progress`}>
+                <Button variant="info">My Progress</Button>
+            </Link>
             <PokemonList/>
         </>
     );
