@@ -17,6 +17,7 @@ type PokemonContextType = {
     isPokedex: boolean,
     setIsPokedex: React.Dispatch<React.SetStateAction<boolean>>
     pokemonTypes: PokemonComponent[];
+    allPokemonsCount: number;
 }
 
 const PokemonContext = createContext<PokemonContextType>({
@@ -29,7 +30,8 @@ const PokemonContext = createContext<PokemonContextType>({
     isPokedex: false,
     setIsPokedex: () => {
     },
-    pokemonTypes: []
+    pokemonTypes: [],
+    allPokemonsCount: 0
 });
 
 export const usePokemonContext = () => useContext(PokemonContext);
@@ -42,6 +44,7 @@ function usePokemons() {
     const [isPokedex, setIsPokedex] = useState<boolean>(false);
     const [hasMorePokemon, setHasMorePokemon] = useState<boolean>(!!nextUrl);
     const [pokemonTypes, setPokemonTypes] = useState<PokemonComponent[]>([]);
+    const [allPokemonsCount, setAllPokemonsCount] = useState<number>(0);
 
 
     useEffect(() => {
@@ -75,6 +78,7 @@ function usePokemons() {
                 });
 
                 setNextUrl(result.data.next);
+                setAllPokemonsCount(result.data.count);
             }
         }
     };
@@ -160,7 +164,8 @@ function usePokemons() {
         updatePokemonDetails,
         isPokedex,
         setIsPokedex,
-        pokemonTypes
+        pokemonTypes,
+        allPokemonsCount
     };
 }
 

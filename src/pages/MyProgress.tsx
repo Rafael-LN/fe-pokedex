@@ -1,13 +1,11 @@
 import {Button, Container} from "react-bootstrap";
 import {useNavigate} from "react-router-dom";
 import {usePokemonContext} from "../context/PokemonsContext";
-import useAllPokemons from "../hooks/useAllPokemons";
 import {useEffect, useState} from "react";
 
 export function MyProgress() {
     const navigate = useNavigate();
-    const allPokemonsCount = useAllPokemons();
-    const { pokemons } = usePokemonContext();
+    const {pokemons, allPokemonsCount} = usePokemonContext();
 
     const [percentageCaught, setPercentageCaught] = useState<string>('');
     const [remainingPokemon, setRemainingPokemon] = useState(0);
@@ -16,9 +14,8 @@ export function MyProgress() {
     useEffect(() => {
         // Calculate progress based on caught Pokémon count and total Pokémon count
         const caughtPokemonsCount = pokemons.filter(pokemon => pokemon.caught).length;
-        const totalPokemonsCount = allPokemonsCount;
-        const remainingPokemon = totalPokemonsCount - caughtPokemonsCount;
-        const percentage = ((caughtPokemonsCount / totalPokemonsCount) * 100).toFixed(2);
+        const remainingPokemon = allPokemonsCount - caughtPokemonsCount;
+        const percentage = ((caughtPokemonsCount / allPokemonsCount) * 100).toFixed(2);
         setPercentageCaught(percentage);
         setTotalCaughtPokemon(caughtPokemonsCount);
         setRemainingPokemon(remainingPokemon);
