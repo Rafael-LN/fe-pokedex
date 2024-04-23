@@ -6,6 +6,7 @@ import PokemonDetail from "./components/PokemonDetail";
 import {Pokedex} from "./pages/Pokedex";
 import {Gallery} from "./pages/Gallery";
 import {MyProgress} from "./pages/MyProgress";
+import {NavBarComponent} from "./components/NavBarComponent"
 
 const router = createBrowserRouter([
     {
@@ -31,5 +32,10 @@ const router = createBrowserRouter([
 ])
 
 export function App() {
-    return <RouterProvider router={router}/>
+    return (
+        <>
+            <NavBarComponent />
+            <RouterProvider router={router}></RouterProvider>
+        </>
+)
 }
