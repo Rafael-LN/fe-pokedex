@@ -20,16 +20,17 @@ type PokemonContextType = {
     allPokemonsCount: number;
 }
 
+type PokemonProviderProps = {
+    children: React.ReactNode;
+}
+
 const PokemonContext = createContext<PokemonContextType>({
     pokemons: [],
-    fetchNextPage: async () => {
-    },
+    fetchNextPage: async () => {},
     hasMorePokemon: false,
-    updatePokemonDetails: () => {
-    },
+    updatePokemonDetails: () => {},
     isPokedex: false,
-    setIsPokedex: () => {
-    },
+    setIsPokedex: () => {},
     pokemonTypes: [],
     allPokemonsCount: 0
 });
@@ -42,7 +43,6 @@ function usePokemons() {
      );
     const [nextUrl, setNextUrl] = useState<string | null>(POKEMON_API_POKEMON_URL);
     const [isPokedex, setIsPokedex] = useState<boolean>(false);
-    const [hasMorePokemon, setHasMorePokemon] = useState<boolean>(!!nextUrl);
     const [pokemonTypes, setPokemonTypes] = useState<PokemonComponent[]>([]);
     const [allPokemonsCount, setAllPokemonsCount] = useState<number>(0);
 
@@ -50,14 +50,6 @@ function usePokemons() {
     useEffect(() => {
         fetchPokemon();
     }, []);
-
-    useEffect(() => {
-        if (isPokedex) {
-            setHasMorePokemon(pokemons.filter(pokemon => pokemon.caught).length > 20);
-        } else {
-            setHasMorePokemon(!!nextUrl);
-        }
-    }, [isPokedex]);
 
     const fetchPokemon = async () => {
         if (nextUrl) {
@@ -112,13 +104,12 @@ function usePokemons() {
             );
 
             // Retrieve caughtPokemons from localStorage
-            const storedCaughtPokemons = localStorage.getItem("caughtPokemons");
-            const caughtPokemons: PokemonDetails[] = storedCaughtPokemons ? JSON.parse(storedCaughtPokemons) : [];
+            const storedCaughtPokemons = getPokemonsFromLocalStorage("caughtPokemons");
 
             if (!updatedPokemon.caught) {
                 savePokemonsInLocalStorage(
                     "caughtPokemons",
-                    [...caughtPokemons
+                    [...storedCaughtPokemons
                         .filter(
                             (caughtPokemon) =>
                                 caughtPokemon.name !== updatedPokemon.name
@@ -126,14 +117,14 @@ function usePokemons() {
                     ]);
             } else if (updatedPokemon.note) {
                 savePokemonsInLocalStorage("caughtPokemons",
-                    [...caughtPokemons
+                    [...storedCaughtPokemons
                         .map(
                             (caughtPokemon) =>
                                 caughtPokemon.name === updatedPokemon.name ? updatedPokemon : caughtPokemon
                         )
                     ]);
             } else {
-                savePokemonsInLocalStorage("caughtPokemons", [...caughtPokemons, updatedPokemon]);
+                savePokemonsInLocalStorage("caughtPokemons", [...storedCaughtPokemons, updatedPokemon]);
             }
         }
     };
@@ -160,17 +151,13 @@ function usePokemons() {
     return {
         pokemons,
         fetchNextPage: fetchPokemon,
-        hasMorePokemon,
+        hasMorePokemon: !!nextUrl,
         updatePokemonDetails,
         isPokedex,
         setIsPokedex,
         pokemonTypes,
         allPokemonsCount
     };
-}
-
-type PokemonProviderProps = {
-    children: React.ReactNode;
 }
 
 export default function PokemonProvider({children}: PokemonProviderProps) {
