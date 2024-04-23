@@ -33,6 +33,7 @@ export type PokemonDetails = {
     color: string | null;
     caught?: boolean;
     caughtDate?: Date;
+    note?: string;
 }
 
 export type PokemonListData = {

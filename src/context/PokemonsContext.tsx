@@ -12,7 +12,7 @@ type PokemonContextType = {
     pokemons: PokemonDetails[],
     fetchNextPage: () => Promise<void>,
     hasMorePokemon: boolean,
-    setCaughtState: (pokemonName: string | undefined, caught: boolean) => void,
+    updatePokemonDetails: (pokemonName: string | undefined, caught: boolean, note?: string) => void,
     isPokedex: boolean,
     setIsPokedex: React.Dispatch<React.SetStateAction<boolean>>
     pokemonTypes: PokemonComponent[];
@@ -20,11 +20,14 @@ type PokemonContextType = {
 
 const PokemonContext = createContext<PokemonContextType>({
     pokemons: [],
-    fetchNextPage: async () => {},
+    fetchNextPage: async () => {
+    },
     hasMorePokemon: false,
-    setCaughtState: () => {},
+    updatePokemonDetails: () => {
+    },
     isPokedex: false,
-    setIsPokedex: () => {},
+    setIsPokedex: () => {
+    },
     pokemonTypes: []
 });
 
@@ -51,7 +54,7 @@ function usePokemons() {
     useEffect(() => {
         if (isPokedex) {
             setHasMorePokemon(pokemons.filter(pokemon => pokemon.caught).length > 20);
-        }else {
+        } else {
             setHasMorePokemon(!!nextUrl);
         }
     }, [isPokedex]);
@@ -68,9 +71,9 @@ function usePokemons() {
                     const mergedPokemons = listPokemons
                         .filter(pokemon => !prevPokemons.some(p => p.name === pokemon.name))
                         .map(pokemon => {
-                        const caughtPokemon = prevPokemons.find(p => p.name === pokemon.name);
-                        return caughtPokemon ?? pokemon;
-                    });
+                            const caughtPokemon = prevPokemons.find(p => p.name === pokemon.name);
+                            return caughtPokemon ?? pokemon;
+                        });
                     return [...prevPokemons, ...mergedPokemons].sort((a, b) => a.id - b.id);
                 });
 
@@ -87,13 +90,18 @@ function usePokemons() {
         };
     };
 
-    const setCaughtState = (pokemonName: string | undefined, caught: boolean) => {
+    const updatePokemonDetails = (pokemonName: string | undefined, caught: boolean, note?: string) => {
         // Find the Pokémon object with the given name
-        const pokemonToCatch = pokemons.find(pokemon => pokemon.name === pokemonName);
+        const pokemonToUpdate = pokemons.find(pokemon => pokemon.name === pokemonName);
 
-        if (pokemonToCatch) {
-            // Update the caught status of the Pokémon object to true
-            const updatedPokemon: PokemonDetails = { ...pokemonToCatch, caught, caughtDate: new Date() };
+        if (pokemonToUpdate) {
+            // Update the caught status of the Pokémon object
+            const updatedPokemon: PokemonDetails = {
+                ...pokemonToUpdate,
+                caught,
+                caughtDate: caught ? new Date() : undefined,
+                note: note || '' // Set the note to the provided value or an empty string if not provided
+            };
 
             // Update the state with the modified Pokémon object
             setPokemons(prevPokemons =>
@@ -104,12 +112,17 @@ function usePokemons() {
 
             // Retrieve caughtPokemons from localStorage
             const storedCaughtPokemons = localStorage.getItem("caughtPokemons");
-            const caughtPokemons = storedCaughtPokemons ? JSON.parse(storedCaughtPokemons) : [];
+            const caughtPokemons: PokemonDetails[] = storedCaughtPokemons ? JSON.parse(storedCaughtPokemons) : [];
 
-            // Save the caught Pokémon object in localStorage
-            localStorage.setItem("caughtPokemons", JSON.stringify([...caughtPokemons, updatedPokemon]));
+            if (!updatedPokemon.caught) {
+                localStorage.setItem("caughtPokemons", JSON.stringify([...caughtPokemons.filter((caughtPokemon) => caughtPokemon.name !== updatedPokemon.name)]));
+            } else {
+                // Save the updated Pokémon object in localStorage
+                localStorage.setItem("caughtPokemons", JSON.stringify([...caughtPokemons, updatedPokemon]));
+            }
         }
     };
+
 
     useEffect(() => {
         const fetchPokemonTypes = async () => {
@@ -133,7 +146,7 @@ function usePokemons() {
         pokemons,
         fetchNextPage: fetchPokemon,
         hasMorePokemon,
-        setCaughtState: setCaughtState,
+        updatePokemonDetails,
         isPokedex,
         setIsPokedex,
         pokemonTypes

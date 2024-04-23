@@ -1,18 +1,19 @@
 import {useNavigate, useParams} from "react-router-dom";
 import PokemonStats from "./PokemonStats";
-import {Alert, Button, Card, CardImg, CardText, Col, Container, Row} from "react-bootstrap";
+import {Alert, Button, Card, CardImg, Col, Container, Form, Row} from "react-bootstrap";
 import {PokemonInfo} from "./PokemonInfo";
-import {useState} from "react";
+import React, {useState} from "react";
 import {usePokemonContext} from "../context/PokemonsContext";
 
 export default function PokemonDetail() {
     const navigate = useNavigate();
     const {name} = useParams();
-    const {pokemons, setCaughtState, isPokedex} = usePokemonContext();
+    const {pokemons, updatePokemonDetails, isPokedex} = usePokemonContext();
 
     const [showPopup, setShowPopup] = useState(false);
+    const [note, setNote] = useState("");
 
-    const pokemon = pokemons.find((pokemon) => pokemon.name === name)
+    const pokemon = pokemons.find((pokemon) => pokemon.name === name);
 
 
     const goBack = () => {
@@ -20,8 +21,12 @@ export default function PokemonDetail() {
     }
 
     const handleMarkAsCaughtAndShowPopup = () => {
-        setCaughtState(pokemon?.name, true);
+        updatePokemonDetails(pokemon?.name, true);
         setShowPopup(true);
+    };
+
+    const handleNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setNote(event.target.value);
     };
 
     return (
@@ -46,7 +51,12 @@ export default function PokemonDetail() {
                     </Col>
                 </Row>
                 {pokemon?.stats && <PokemonStats stats={pokemon?.stats}/>}
-
+                <Row>
+                    <Form.Group controlId="noteTextArea">
+                        <Form.Label>Add a Note:</Form.Label>
+                        <Form.Control as="textarea" rows={3} value={note} onChange={handleNoteChange} />
+                    </Form.Group>
+                </Row>
             </Container>
 
 

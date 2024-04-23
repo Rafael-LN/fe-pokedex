@@ -5,7 +5,7 @@ import { usePokemonContext } from '../context/PokemonsContext';
 import {PokemonDetails} from "../models";
 
 export default function PokemonList() {
-    const { pokemons, hasMorePokemon, fetchNextPage, isPokedex, pokemonTypes, setCaughtState } = usePokemonContext();
+    const { pokemons, hasMorePokemon, fetchNextPage, isPokedex, pokemonTypes, updatePokemonDetails } = usePokemonContext();
 
     const [nameFilter, setNameFilter] = useState<string>('');
     const [heightFilter, setHeightFilter] = useState<string>('');
@@ -38,7 +38,7 @@ export default function PokemonList() {
     };
 
     const handleDeleteSelected = () => {
-        selectedPokemons.forEach((pokemon) => setCaughtState(pokemon.name, false))
+        selectedPokemons.forEach((pokemon) => updatePokemonDetails(pokemon.name, false))
         setSelectedPokemons([]);
     };
 
