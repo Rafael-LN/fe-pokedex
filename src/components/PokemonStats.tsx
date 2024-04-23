@@ -1,5 +1,5 @@
 import {PokemonStat} from "../models";
-import {Card, ProgressBar} from "react-bootstrap";
+import {Card, CardBody, ProgressBar} from "react-bootstrap";
 import {Fragment} from "react";
 
 interface PokemonStatsProps {
@@ -9,8 +9,8 @@ interface PokemonStatsProps {
 export default function PokemonStats({stats}: PokemonStatsProps) {
 
     return (
-        <Card className="w-50">
-            <Card.Body>
+        <Card>
+            <CardBody>
                 {stats.map((stat) => (
                     <Fragment key={stat.stat.name}>
                         <div className="d-flex mb-2">
@@ -20,7 +20,7 @@ export default function PokemonStats({stats}: PokemonStatsProps) {
                         <ProgressBar className="mb-2" now={stat.base_stat} max={255}/>
                     </Fragment>
                 ))}
-            </Card.Body>
+            </CardBody>
         </Card>
     );
 }

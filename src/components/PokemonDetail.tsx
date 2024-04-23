@@ -1,6 +1,17 @@
 import {useNavigate, useParams} from "react-router-dom";
 import PokemonStats from "./PokemonStats";
-import {Alert, Button, Card, CardImg, Col, Container, Form, Row} from "react-bootstrap";
+import {
+    Alert,
+    Button,
+    Card,
+    CardImg,
+    Col,
+    Container,
+    FormControl,
+    FormGroup,
+    FormLabel,
+    Row
+} from "react-bootstrap";
 import {PokemonInfo} from "./PokemonInfo";
 import React, {useState} from "react";
 import {usePokemonContext} from "../context/PokemonsContext";
@@ -10,10 +21,11 @@ export default function PokemonDetail() {
     const {name} = useParams();
     const {pokemons, updatePokemonDetails, isPokedex} = usePokemonContext();
 
-    const [showPopup, setShowPopup] = useState(false);
-    const [note, setNote] = useState("");
-
     const pokemon = pokemons.find((pokemon) => pokemon.name === name);
+
+    const [showPopup, setShowPopup] = useState(false);
+    const [note, setNote] = useState(pokemon?.note);
+
 
 
     const goBack = () => {
@@ -27,6 +39,10 @@ export default function PokemonDetail() {
 
     const handleNoteChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         setNote(event.target.value);
+    };
+
+    const handleSaveNote = () => {
+        updatePokemonDetails(pokemon?.name, pokemon?.caught || false, note);
     };
 
     return (
@@ -50,12 +66,20 @@ export default function PokemonDetail() {
                         {pokemon && <PokemonInfo pokemon={pokemon} isPokedex={isPokedex}/>}
                     </Col>
                 </Row>
-                {pokemon?.stats && <PokemonStats stats={pokemon?.stats}/>}
                 <Row>
-                    <Form.Group controlId="noteTextArea">
-                        <Form.Label>Add a Note:</Form.Label>
-                        <Form.Control as="textarea" rows={3} value={note} onChange={handleNoteChange} />
-                    </Form.Group>
+                    <Col lg={6}>
+                        {pokemon?.stats && <PokemonStats stats={pokemon?.stats}/>}
+                    </Col>
+                    <Col lg={6}>
+                        {
+                            isPokedex &&
+                            <FormGroup controlId="noteTextArea">
+                                <FormLabel>Add a Note:</FormLabel>
+                                <FormControl as="textarea" value={note} onChange={handleNoteChange}/>
+                                <Button onClick={handleSaveNote}>Save Note</Button>
+                            </FormGroup>
+                        }
+                    </Col>
                 </Row>
             </Container>
 

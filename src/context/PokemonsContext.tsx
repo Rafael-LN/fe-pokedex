@@ -116,6 +116,11 @@ function usePokemons() {
 
             if (!updatedPokemon.caught) {
                 localStorage.setItem("caughtPokemons", JSON.stringify([...caughtPokemons.filter((caughtPokemon) => caughtPokemon.name !== updatedPokemon.name)]));
+            } else if (updatedPokemon.note) {
+                localStorage.setItem("caughtPokemons", JSON.stringify(
+                    [...caughtPokemons
+                        .map((caughtPokemon) => caughtPokemon.name === updatedPokemon.name ? updatedPokemon : caughtPokemon)
+                    ]));
             } else {
                 // Save the updated Pokémon object in localStorage
                 localStorage.setItem("caughtPokemons", JSON.stringify([...caughtPokemons, updatedPokemon]));
